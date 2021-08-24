@@ -1,55 +1,52 @@
-# Tech interview smart contracts coding problem
+[![MIT License][license-shield]][license-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
 
-This is a Solidity coding problem for [Nayms](https://nayms.io) tech interviews. It is designed to take **no more than a few hours**.
 
-## Getting setup
 
-Ensure you have installed:
+# Nayms Technical Interview Smart Contract Coding Problem
 
-* NodeJS 14+
-* Yarn (_install using `npm i -g yarn`_)
 
-## Instructions
+Smart contract solutions for [Nayms Smart Contract Tech Interview Coding Problem](https://github.com/nayms/smart-contracts-tech-interview)
 
-### Part 1: Setup
+'Token.sol' contains a rudimentary solution for paying token dividends to token holders and passes all unit tests laid out in 'test/token.test.js'.
 
-Clone the repo locally and install the NPM dependencies using:
+A more robust solution can be found in 'Token2.sol', where dividend balances are updated whenever a transaction event (transfer, transferFrom, mint, burn) takes place. This avoids the potential complications and high gas fees that may be incurred by looping through a large number of token holder address' to pay dividends in 'token.sol'.
 
-```shell
-yarn
-```
+(SafeMath is yet to be implimented on contract operations)
+  
 
-### Part 2: Complete the task
-
-The contracts consist of a mintable ERC-20 `Token` (which is similar to a _Wrapped ETH_ token). Callers mint tokens by depositing ETH. They can then burn their token balance to get the equivalent amount of deposited ETH back.
-
-In addition, token holders can receive dividend payments in ETH in proportion to their token balance relative to the total supply. Dividends are assigned by looping through the list of holders.
-
-Dividend payments are assigned to token holders' addresses. This means that even if a token holder were to send their tokens to somebody else later on or burn their tokens, they would still be entitled to the dividends they accrued whilst they were holding the tokens. 
-
-You will thus need to **efficiently** keep track of individual token holder addresses in order to assign dividend payouts to holders with minimal gas cost.
-
-For a clearer understanding of how the code is supposed to work please refer to the tests in the `test` folder.
-
-**You only need to write code in the `Token.sol` file. The task is complete once all the unit tests pass successfully.**
-
-### Part 3: BONUS!
-
-The dividends payment process requires looping through token holders. If the no. of holders is very large (e.g. >1000) it's likely that the `recordDividend()` method will fail (due to out-of-gas error). Come up with another way of paying dividends that does not suffer from this issue.
-
-Outline in writing (or code!) how you would do things differently. Create a `Token2.sol` file with your new code and add new unit tests too if you like!
-
-### Part 4: Send us your code
-
-Please publish your code to a new **private** Github repository and give us ([@hiddentao](https://github.com/hiddentao), [@melks](https://github.com/melks)) read-only permissions to it.
-
-## Commands
-
-* `yarn devnet` - run a local [ganache](https://www.trufflesuite.com/ganache) instance to deploy the contracts to (we recommend keeping this running form the start in a separate tab)
-* `yarn compile` - compile the code
-* `yarn test` - run the tests
-* `yarn deploy` - deploy compiled code to local testnet (in case you want to use Remix, etc)
-
+<!-- LICENSE -->
 ## License
 
-MIT
+Distributed under the MIT License. See `LICENSE` for more information.
+
+
+
+<!-- CONTACT -->
+## Contact
+
+LinkedIn - [https://www.linkedin.com/in/RAMWatson/](https://www.linkedin.com/in/RAMWatson/)
+
+
+## Built With
+
+* [Solidity](https://docs.soliditylang.org/en/v0.8.6/)
+* [Truffle](https://www.trufflesuite.com/)
+* [Open Zeppelin](https://openzeppelin.com/)
+* [Chai](https://www.chaijs.com/)
+* [Web3js](https://web3js.readthedocs.io/en/v1.3.4/)
+* [Node.js](https://nodejs.org/en/)
+
+
+
+
+
+
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
+[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-url]: https://www.linkedin.com/in/RAMWatson/
+[product-screenshot]: screenshot.jpg
