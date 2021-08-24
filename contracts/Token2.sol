@@ -34,27 +34,32 @@ contract Token is IERC20, IMintableToken, IDividends {
   event Burned(uint amount);
 
 
+  // Variables
+
+  uint public scaledDividendPerToken;
+
+  uint public scaling = 10**8;
+
+
   // Mappings
 
   mapping (address => mapping (address => uint256)) internal allowed;
 
-  mapping(address => uint) dividend;
+  mapping (address => uint) scaledOutstandingDividend; 
 
-  mapping(address => bool) onList;
+  mapping (address => uint) scaledDividendCreditedTo; 
+  
 
-
-  // Variables
-
-  address[] holders;
-
-
-  function addHolder(address _address) private {
-    if (onList[_address] == true) {
-      return;
-    }
-    onList[_address] = true;
-    holders.push(_address);
+  /**
+   * @dev Updates individual address dividends
+   */
+  function update(address _address) private {
+    uint owed = scaledDividendPerToken - scaledDividendCreditedTo[_address];
+    scaledOutstandingDividend[_address] += balanceOf[_address] * owed;
+    scaledDividendCreditedTo[_address] = scaledDividendPerToken;
   }
+
+
 
 
   // IERC20
@@ -79,11 +84,12 @@ contract Token is IERC20, IMintableToken, IDividends {
     require(to != address(0));
     require(value <= balanceOf[msg.sender]);
 
+    update(msg.sender);
+    update(to);
+
     balanceOf[msg.sender] -= value;
     balanceOf[to] += value;
 
-    addHolder(to);
-      
     emit Transfer(msg.sender, to, value);
     return true;
   }
@@ -114,12 +120,12 @@ contract Token is IERC20, IMintableToken, IDividends {
     require(value <= balanceOf[from]);
     require(value <= allowed[from][msg.sender]);
 
+    update(msg.sender);
+    update(to);
+
     balanceOf[from] -= value;
     balanceOf[to] += value;
     allowed[from][msg.sender] -= value;
-
-    addHolder(to);
-
 
     emit Transfer(from, to, value);
     return true;
@@ -140,10 +146,11 @@ contract Token is IERC20, IMintableToken, IDividends {
    */
   function mint() external payable override {
     require(msg.value > 0, "No ETH supplied.");
+
+    update(msg.sender);
+
     balanceOf[msg.sender] += msg.value;
     totalSupply += msg.value;
-
-    addHolder(msg.sender);
 
     emit Minted(msg.value);
   }
@@ -157,6 +164,9 @@ contract Token is IERC20, IMintableToken, IDividends {
   function burn(address payable dest) external override {
     uint burnAmount = balanceOf[msg.sender];
     require(burnAmount > 0, "No tokens to burn.");
+
+    update(msg.sender);
+
     balanceOf[msg.sender] -= burnAmount;
     totalSupply -= burnAmount;
     dest.transfer(burnAmount);
@@ -169,23 +179,25 @@ contract Token is IERC20, IMintableToken, IDividends {
 
   // IDividends
 
+  uint public scaledRemainder = 0;
   function recordDividend() external payable override {
-    require(msg.value > 0, "Empty dividend.");
-    for (uint i=0; i<(holders.length); i++) {
-      
-      address addr = holders[i];
-      dividend[addr] += ((msg.value * balanceOf[addr]) / totalSupply); // potential for round down errors due to decimals
-    }
+    // scale the deposit and add the previous remainder
+    uint256 available = (msg.value * scaling) + scaledRemainder;
+    scaledDividendPerToken += available / totalSupply;
+    // compute the new remainder
+    scaledRemainder = available % totalSupply;
   }
 
   
-  function getWithdrawableDividend(address payee) external view override returns (uint256) {
-    return dividend[payee];
+  function getWithdrawableDividend(address payee) external override returns (uint256) {
+    // update(payee);   would throw error as non-payable view function
+    return outstandingDividend[msg.sender]; // technically not up to date
   }
 
   function withdrawDividend(address payable dest) external override {
-    uint amount = dividend[msg.sender];
-    dividend[msg.sender] = 0;
+    update(msg.sender);
+    uint256 amount = scaledDividendBalanceOf[msg.sender] / scaling;
+    scaledOutstandingDividend[msg.sender] %= scaling;  // retain the remainder
     dest.transfer(amount);
   }
 }
