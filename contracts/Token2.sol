@@ -189,14 +189,14 @@ contract Token is IERC20, IMintableToken, IDividends {
   }
 
   
-  function getWithdrawableDividend(address payee) external override returns (uint256) {
+  function getWithdrawableDividend(address payee) external view override returns (uint256) {
     // update(payee);   would throw error as non-payable view function
-    return outstandingDividend[msg.sender]; // technically not up to date
+    return (scaledOutstandingDividend[msg.sender] / scaling); // technically not up to date
   }
 
   function withdrawDividend(address payable dest) external override {
     update(msg.sender);
-    uint256 amount = scaledDividendBalanceOf[msg.sender] / scaling;
+    uint256 amount = scaledOutstandingDividend[msg.sender] / scaling;
     scaledOutstandingDividend[msg.sender] %= scaling;  // retain the remainder
     dest.transfer(amount);
   }
