@@ -23,7 +23,7 @@ contract Token is IERC20, IMintableToken, IDividends {
 
 
 
-  // Eventsno
+  // Events
 
   event Transfer(address from, address to, uint256 value);
 
