@@ -3,7 +3,7 @@
 
 
 
-# Nayms Technical Interview Smart Contract Coding Problem
+# Mintable ERC20 token with proportional dividends
 
 
 Smart contract solutions for [Nayms Smart Contract Tech Interview Coding Problem](https://github.com/nayms/smart-contracts-tech-interview)
