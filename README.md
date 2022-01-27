@@ -38,6 +38,13 @@ LinkedIn - [https://www.linkedin.com/in/RAMWatson/](https://www.linkedin.com/in/
 * [Node.js](https://nodejs.org/en/)
 
 
+<!-- CONTACT -->
+## Contact
+
+Twitter - [@0xTDF](https://twitter.com/0xTDF)
+
+LinkedIn - [https://www.linkedin.com/in/RAMWatson/](https://www.linkedin.com/in/RAMWatson/)
+
 
 
 
