@@ -8,18 +8,14 @@ import "./IDividends.sol";
 import "./SafeMath.sol";
 
 contract Token is IERC20, IMintableToken, IDividends {
-  // ------------------------------------------ //
-  // ----- BEGIN: DO NOT EDIT THIS SECTION ---- //
-  // ------------------------------------------ //
+  
   using SafeMath for uint256;
   uint256 public totalSupply;
   uint256 public decimals = 18;
   string public name = "Test token";
   string public symbol = "TEST";
   mapping (address => uint256) public balanceOf;
-  // ------------------------------------------ //
-  // ----- END: DO NOT EDIT THIS SECTION ------ //  
-  // ------------------------------------------ //
+  
 
 
 
