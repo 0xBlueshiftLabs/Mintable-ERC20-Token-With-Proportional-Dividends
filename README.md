@@ -42,7 +42,7 @@ LinkedIn - [https://www.linkedin.com/in/RAMWatson/](https://www.linkedin.com/in/
 ## Contact
 
 Twitter - [@0xTDF](https://twitter.com/0xTDF)
-
+Project Link - [https://github.com/0xBlueshiftLabs/Mintable-ERC20-Token-With-Proportional-Dividends](https://github.com/0xBlueshiftLabs/Mintable-ERC20-Token-With-Proportional-Dividends)
 LinkedIn - [https://www.linkedin.com/in/RAMWatson/](https://www.linkedin.com/in/RAMWatson/)
 
 
